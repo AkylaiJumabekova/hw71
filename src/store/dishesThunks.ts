@@ -30,3 +30,11 @@ export const addDishToFirebase = createAsyncThunk<Dish, Dish, { state: RootState
         return { ...dish, id: response.data.name };
     }
 );
+
+export const updateDishInFirebase = createAsyncThunk<Dish, Dish, { state: RootState }>(
+    'dishes/updateDishInFirebase',
+    async (dish) => {
+        await axiosApi.put(`/dishes/${dish.id}.json`, dish);
+        return dish;
+    }
+);
