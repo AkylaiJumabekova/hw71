@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchDishes, addDishToFirebase, updateDishInFirebase } from '../../store/dishesThunks';
+import { fetchDishes, addDishToFirebase, updateDishInFirebase, deleteDishFromFirebase } from '../../store/dishesThunks';
 import { Dish } from '../../types';
 
 const Dishes: React.FC = () => {
@@ -13,6 +13,7 @@ const Dishes: React.FC = () => {
         price: 0,
         image: ''
     });
+    
     const [editMode, setEditMode] = useState<boolean>(false);
 
     useEffect(() => {
@@ -25,6 +26,10 @@ const Dishes: React.FC = () => {
 
     const handleUpdateDish = async (dish: Dish) => {
         await dispatch(updateDishInFirebase(dish));
+    };
+
+    const handleDeleteDish = async (dishId: string) => {
+        await dispatch(deleteDishFromFirebase(dishId));
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +88,7 @@ const Dishes: React.FC = () => {
                     <li key={dish.id}>
                         {dish.title} - {dish.price} - <img src={dish.image} alt={dish.title} width="50" />
                         <button onClick={() => handleEditClick(dish)}>Edit</button>
+                        <button onClick={() => handleDeleteDish(dish.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

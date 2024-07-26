@@ -38,3 +38,11 @@ export const updateDishInFirebase = createAsyncThunk<Dish, Dish, { state: RootSt
         return dish;
     }
 );
+
+export const deleteDishFromFirebase = createAsyncThunk<string, string, { state: RootState }>(
+    'dishes/deleteDishFromFirebase',
+    async (dishId) => {
+        await axiosApi.delete(`/dishes/${dishId}.json`);
+        return dishId;
+    }
+);

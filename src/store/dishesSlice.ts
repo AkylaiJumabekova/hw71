@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Dish } from '../types';
-import { fetchDishes, addDishToFirebase, updateDishInFirebase } from './dishesThunks';
+import { fetchDishes, addDishToFirebase, updateDishInFirebase, deleteDishFromFirebase } from './dishesThunks';
 
 interface DishesState {
     dishes: Dish[];
@@ -38,6 +38,12 @@ const dishesSlice = createSlice({
                 const index = state.dishes.findIndex(dish => dish.id === action.payload.id);
                 if (index !== -1) {
                     state.dishes[index] = action.payload;
+                }
+            })
+            .addCase(deleteDishFromFirebase.fulfilled, (state, action: PayloadAction<string>) => {
+                const index = state.dishes.findIndex(dish => dish.id === action.payload);
+                if (index !== -1) {
+                    state.dishes.splice(index, 1);
                 }
             });
     }
